@@ -1,4 +1,4 @@
-name: Build All Solutions
+name: Windows MSVC Build with vcpkg
 
 on:
   push:
@@ -11,19 +11,33 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v3
+
+      - name: Clone vcpkg to C:\Dev\vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git C:\Dev\vcpkg
+          C:\Dev\vcpkg\bootstrap-vcpkg.bat
+
+      - name: Install required libraries via vcpkg
+        run: |
+          C:\Dev\vcpkg\vcpkg.exe install cpp-httplib redis-plus-plus mysql-connector-cpp:x64-windows
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
 
-      - name: Find and Build All .sln Files
+      - name: Build all .sln files with vcpkg integration
         run: |
           Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
             Write-Host "Building $($_.FullName)"
-            msbuild $_.FullName /p:Configuration=Debug /p:Platform=x64
+            msbuild $_.FullName `
+              /p:Configuration=Debug `
+              /p:Platform=x64 `
+              /p:VcpkgRoot=C:\Dev\vcpkg `
+              /p:VcpkgTriplet=x64-windows
           }
         shell: pwsh
+
 
       - name: Lint HTML, CSS, JS
         uses: actions/setup-node@v3
