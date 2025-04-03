@@ -1,4 +1,4 @@
-name: Windows MSVC Build with vcpkg
+name: Windows MSVC Build with vcpkg cache
 
 on:
   push:
@@ -14,12 +14,22 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
+      - name: Cache vcpkg installed libraries
+        uses: actions/cache@v3
+        with:
+          path: |
+            C:\Dev\vcpkg\installed
+            C:\Dev\vcpkg\packages
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+          restore-keys: |
+            vcpkg-${{ runner.os }}-
+
       - name: Clone vcpkg to C:\Dev\vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git C:\Dev\vcpkg
           C:\Dev\vcpkg\bootstrap-vcpkg.bat
 
-      - name: Install required libraries via vcpkg
+      - name: Install libraries with vcpkg (skip if cached)
         run: |
           C:\Dev\vcpkg\vcpkg.exe install cpp-httplib redis-plus-plus mysql-connector-cpp:x64-windows
 
@@ -37,6 +47,7 @@ jobs:
               /p:VcpkgTriplet=x64-windows
           }
         shell: pwsh
+
 
 
       - name: Lint HTML, CSS, JS
