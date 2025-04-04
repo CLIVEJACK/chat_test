@@ -36,17 +36,21 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
 
-      - name: Build all .sln files with vcpkg integration
+      - name: Build all .sln files with vcpkg + MySQL manually linked
         run: |
+          $mysqlInclude = '"C:\Program Files\mysql-connector-c++-9.2.0-winx64\include"'
+          $mysqlLib = '"C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64"'
           Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
-                Write-Host "Building $($_.FullName)"
-                & msbuild $_.FullName `
-                  /p:Configuration=Debug `
-                  /p:Platform=x64 `
-                  /p:VcpkgRoot=C:\Dev\vcpkg `
-                  /p:VcpkgTriplet=x64-windows `
-                  /p:VcpkgEnableManifest=true
-              }
+            Write-Host "Building $($_.FullName)"
+            & msbuild $_.FullName `
+              /p:Configuration=Debug `
+              /p:Platform=x64 `
+              /p:VcpkgRoot=C:\Dev\vcpkg `
+              /p:VcpkgTriplet=x64-windows `
+              /p:VcpkgEnableManifest=true `
+              /p:AdditionalIncludeDirectories=$mysqlInclude `
+              /p:AdditionalLibraryDirectories=$mysqlLib
+          }
         shell: pwsh
 
 
