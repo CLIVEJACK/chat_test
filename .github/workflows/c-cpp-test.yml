@@ -45,6 +45,7 @@ jobs:
               /p:Platform=x64 `
               /p:VcpkgRoot=C:\Dev\vcpkg `
               /p:VcpkgTriplet=x64-windows
+              /p:VcpkgEnableManifest=true
           }
         shell: pwsh
 
