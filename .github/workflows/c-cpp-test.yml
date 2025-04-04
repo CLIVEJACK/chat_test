@@ -33,22 +33,17 @@ jobs:
         run: |
           C:\Dev\vcpkg\vcpkg.exe install
 
-      - name: Setup MSBuild manually for Community Edition
-        run: |
-          $msbuildPath = "C:\Dev\IDE\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin"
-          $env:PATH = "$msbuildPath;$env:PATH"
-          & "$msbuildPath\msbuild.exe" -version
-        shell: pwsh
+      - name: Setup MSBuild (for GitHub-hosted runner)
+        uses: microsoft/setup-msbuild@v1.3.1
 
       - name: Build all .sln files with vcpkg + MySQL include
         shell: cmd
         run: |
           set "mysqlInclude=C:\Program Files\mysql-connector-c++-9.2.0-winx64\include;C:\Program Files\mysql-connector-c++-9.2.0-winx64\include\mysql"
           set "mysqlLib=C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64"
-          set "msbuildPath=C:\Dev\IDE\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
           for /r %%F in (*.sln) do (
             echo Building %%F
-            "%msbuildPath%" "%%F" ^
+            msbuild "%%F" ^
               /p:Configuration=Debug ^
               /p:Platform=x64 ^
               /p:VcpkgRoot=C:\Dev\vcpkg ^
@@ -75,7 +70,6 @@ jobs:
 
       - name: Run HTMLHint
         run: htmlhint ./path/to/html/files
-
 
   # docker-build:
   #   needs: lint-and-test
