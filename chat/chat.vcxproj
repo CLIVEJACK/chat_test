@@ -81,7 +81,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-    <AdditionalIncludeDirectories>C:\Program Files\mysql-connector-c++-9.2.0-winx64\include;$(VcpkgRoot)installed\x64-windows\include;$(VcpkgRoot)installed\x64-windows\include\sw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories></ClCompile>
+    <AdditionalIncludeDirectories>
+  C:\Program Files\mysql-connector-c++-9.2.0-winx64\include;
+  C:\Dev\vcpkginstalled\x64-windows\include;
+  C:\Dev\vcpkginstalled\x64-windows\include\sw;
+  %(AdditionalIncludeDirectories)
+</AdditionalIncludeDirectories></ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
