@@ -31,7 +31,7 @@ jobs:
 
       - name: Install libraries with vcpkg (skip if cached)
         run: |
-          C:\Dev\vcpkg\vcpkg.exe install cpp-httplib redis-plus-plus mysql-connector-cpp:x64-windows
+          C:\Dev\vcpkg\vcpkg.exe install
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
