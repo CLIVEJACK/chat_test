@@ -38,13 +38,13 @@ jobs:
           curl -LO https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip
 
       - name: Extract MySQL Connector
-        shell: pwsh
+        shell: powershell
         run: |
-          $zipPath = "$env:GITHUB_WORKSPACE/mysql-connector-c++-1.1.11-winx64.zip"
-          $destPath = "$env:GITHUB_WORKSPACE/mysql-connector"
+          $zipPath = "$env:GITHUB_WORKSPACE\mysql-connector-c++-1.1.11-winx64.zip"
+          $destPath = "$env:GITHUB_WORKSPACE\mysql-connector"
           Expand-Archive -Path $zipPath -DestinationPath $destPath
 
-      - name: Set MySQL Connector Path and Build Solutions
+      - name: Build all .sln files
         shell: cmd
         run: |
           set "mysqlInclude=%GITHUB_WORKSPACE%\mysql-connector\mysql-connector-c++-1.1.11-winx64\include"
