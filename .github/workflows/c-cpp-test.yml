@@ -36,7 +36,7 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
 
-      - name: Build all .sln files with vcpkg + MySQL manually linked
+      - name: Build all .sln files with vcpkg + MySQL include
         run: |
           $mysqlInclude = '"C:\Program Files\mysql-connector-c++-9.2.0-winx64\include"'
           $mysqlLib = '"C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64"'
