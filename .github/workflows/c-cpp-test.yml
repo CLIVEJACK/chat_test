@@ -34,22 +34,22 @@ jobs:
           C:\Dev\vcpkg\vcpkg.exe install
 
       - name: Build all .sln files with vcpkg + MySQL include
+        shell: cmd
         run: |
-          $mysqlInclude = "C:\Program Files\mysql-connector-c++-9.2.0-winx64\include;C:\Program Files\mysql-connector-c++-9.2.0-winx64\include\mysql"
-          $mysqlLib = "C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64"
-          Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
-            Write-Host "Building $($_.FullName)"
-            & msbuild $_.FullName `
-              /p:Configuration=Debug `
-              /p:Platform=x64 `
-              /p:VcpkgRoot=C:\Dev\vcpkg `
-              /p:VcpkgTriplet=x64-windows `
-              /p:VcpkgEnableManifest=true `
-              /p:AdditionalIncludeDirectories="$mysqlInclude" `
-              /p:AdditionalLibraryDirectories="$mysqlLib"
-          }
-        shell: pwsh
-  
+          set "mysqlInclude=C:\Program Files\mysql-connector-c++-9.2.0-winx64\include;C:\Program Files\mysql-connector-c++-9.2.0-winx64\include\mysql"
+          set "mysqlLib=C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64"
+          for /r %%F in (*.sln) do (
+            echo Building %%F
+            msbuild "%%F" ^
+              /p:Configuration=Debug ^
+              /p:Platform=x64 ^
+              /p:VcpkgRoot=C:\Dev\vcpkg ^
+              /p:VcpkgTriplet=x64-windows ^
+              /p:VcpkgEnableManifest=true ^
+              /p:AdditionalIncludeDirectories="%mysqlInclude%" ^
+              /p:AdditionalLibraryDirectories="%mysqlLib%"
+          )
+        
 
       - name: Lint HTML, CSS, JS
         uses: actions/setup-node@v3
