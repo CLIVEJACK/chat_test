@@ -36,12 +36,14 @@ jobs:
       - name: Download MySQL Connector C++ 1.1.11
         run: |
           curl -LO https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip
-      
+
       - name: Extract MySQL Connector
-        run: |
-          Expand-Archive -Path "mysql-connector-c++-1.1.11-winx64.zip" -DestinationPath "$env:GITHUB_WORKSPACE\mysql-connector"
         shell: pwsh
-      
+        run: |
+          $zipPath = "$env:GITHUB_WORKSPACE/mysql-connector-c++-1.1.11-winx64.zip"
+          $destPath = "$env:GITHUB_WORKSPACE/mysql-connector"
+          Expand-Archive -Path $zipPath -DestinationPath $destPath
+
       - name: Set MySQL Connector Path and Build Solutions
         shell: cmd
         run: |
@@ -77,6 +79,7 @@ jobs:
 
       - name: Run HTMLHint
         run: htmlhint ./path/to/html/files
+
 
   # docker-build:
   #   needs: lint-and-test
