@@ -36,21 +36,22 @@ jobs:
       - name: Setup MSBuild (for GitHub-hosted runner)
         uses: microsoft/setup-msbuild@v1.3.1
 
-      - name: Build all .sln files with vcpkg + MySQL include
+      - name: Build all .sln files with vcpkg + MySQL 1.1.x include
         shell: cmd
         run: |
-          set mysqlInclude=C:\Program Files\mysql-connector-c++-9.2.0-winx64\include\mysql;C:\Program Files\mysql-connector-c++-9.2.0-winx64\include
-          set mysqlLib=C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64
+          set "mysqlInclude=C:\Program Files\mysql-connector-c++-1.1.11-winx64\include"
+          set "mysqlLib=C:\Program Files\mysql-connector-c++-1.1.11-winx64\lib64"
+          set "msbuildPath=C:\Dev\IDE\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
           for /r %%F in (*.sln) do (
             echo Building %%F
-            msbuild "%%F" ^
+            "%msbuildPath%" "%%F" ^
               /p:Configuration=Debug ^
               /p:Platform=x64 ^
               /p:VcpkgRoot=C:\Dev\vcpkg ^
               /p:VcpkgTriplet=x64-windows ^
               /p:VcpkgEnableManifest=true ^
-              /p:AdditionalIncludeDirectories="%mysqlInclude%" ^
-              /p:AdditionalLibraryDirectories="%mysqlLib%"
+              /p:AdditionalIncludeDirectories=%mysqlInclude% ^
+              /p:AdditionalLibraryDirectories=%mysqlLib%
           )
 
       - name: Lint HTML, CSS, JS
