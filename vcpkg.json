@@ -2,6 +2,7 @@
   "name": "chat-server",
   "version-string": "1.0.0",
   "dependencies": [
+    "cpp-htmlib",
     "redis-plus-plus"
   ],
   "builtin-baseline": "af86423c140a1e0295430d74ebf819ff9e226fb9"
