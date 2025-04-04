@@ -34,17 +34,14 @@ jobs:
           C:\Dev\vcpkg\vcpkg.exe install
 
       - name: Download MySQL Connector C++ 1.1.11
-        run: |
-          curl -LO https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip
+        run: curl -LO https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip
 
-      - name: Extract MySQL Connector
-        shell: powershell
+      - name: Extract MySQL Connector with 7z
         run: |
-          $zipPath = "$env:GITHUB_WORKSPACE\mysql-connector-c++-1.1.11-winx64.zip"
-          $destPath = "$env:GITHUB_WORKSPACE\mysql-connector"
-          Expand-Archive -Path $zipPath -DestinationPath $destPath
+          7z x mysql-connector-c++-1.1.11-winx64.zip -omysql-connector
+        shell: cmd
 
-      - name: Build all .sln files
+      - name: Set MySQL Connector Path and Build Solutions
         shell: cmd
         run: |
           set "mysqlInclude=%GITHUB_WORKSPACE%\mysql-connector\mysql-connector-c++-1.1.11-winx64\include"
