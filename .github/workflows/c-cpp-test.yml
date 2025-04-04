@@ -39,8 +39,8 @@ jobs:
       - name: Build all .sln files with vcpkg + MySQL include
         shell: cmd
         run: |
-          set "mysqlInclude=C:\Program Files\mysql-connector-c++-9.2.0-winx64\include\mysql;C:\Program Files\mysql-connector-c++-9.2.0-winx64\include"
-          set "mysqlLib=C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64"
+          set mysqlInclude=C:\Program Files\mysql-connector-c++-9.2.0-winx64\include\mysql;C:\Program Files\mysql-connector-c++-9.2.0-winx64\include
+          set mysqlLib=C:\Program Files\mysql-connector-c++-9.2.0-winx64\lib64
           for /r %%F in (*.sln) do (
             echo Building %%F
             msbuild "%%F" ^
@@ -49,8 +49,8 @@ jobs:
               /p:VcpkgRoot=C:\Dev\vcpkg ^
               /p:VcpkgTriplet=x64-windows ^
               /p:VcpkgEnableManifest=true ^
-              "/p:AdditionalIncludeDirectories=%mysqlInclude%" ^
-              "/p:AdditionalLibraryDirectories=%mysqlLib%"
+              /p:AdditionalIncludeDirectories="%mysqlInclude%" ^
+              /p:AdditionalLibraryDirectories="%mysqlLib%"
           )
 
       - name: Lint HTML, CSS, JS
