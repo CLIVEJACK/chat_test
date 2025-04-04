@@ -33,8 +33,11 @@ jobs:
         run: |
           C:\Dev\vcpkg\vcpkg.exe install
 
-      - name: Download MySQL Connector C++ 1.1.11
-        run: curl -LO https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip
+      - name: Download MySQL Connector C++ 1.1.11 (fixed)
+        run: |
+          curl -L -o mysql-connector-c++-1.1.11-winx64.zip ^
+            "https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip"
+        shell: cmd
 
       - name: Extract MySQL Connector with 7z
         run: |
