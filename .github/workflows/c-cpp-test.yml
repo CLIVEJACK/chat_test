@@ -35,29 +35,24 @@ jobs:
 
       - name: Download MySQL Connector C++ 1.1.11
         run: |
-          curl -L -o mysql-connector-cpp.zip ^
-            "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-1.1.11-winx64.zip"
+          curl -L -o mysql-connector.zip ^
+            "https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip"
         shell: cmd
 
-      - name: Extract MySQL Connector using PowerShell
+      - name: Extract MySQL Connector with 7z
         run: |
-          Expand-Archive -Path "$env:GITHUB_WORKSPACE\mysql-connector-cpp.zip" `
-                         -DestinationPath "$env:GITHUB_WORKSPACE\mysql-connector"
-        shell: pwsh
+          7z x mysql-connector.zip -omysql-connector
+        shell: cmd
 
-      - name: Set up MSBuild path
-        run: |
-          echo "C:\Dev\IDE\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin" >> $env:GITHUB_PATH
-        shell: pwsh
-
-      - name: Build all .sln files with MySQL and vcpkg
+      - name: Set MySQL Connector Path and Build Solutions
         shell: cmd
         run: |
           set "mysqlInclude=%GITHUB_WORKSPACE%\mysql-connector\mysql-connector-c++-1.1.11-winx64\include"
           set "mysqlLib=%GITHUB_WORKSPACE%\mysql-connector\mysql-connector-c++-1.1.11-winx64\lib64"
+          set "msbuildPath=C:\Dev\IDE\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
           for /r %%F in (*.sln) do (
             echo Building %%F
-            msbuild "%%F" ^
+            "%msbuildPath%" "%%F" ^
               /p:Configuration=Debug ^
               /p:Platform=x64 ^
               /p:VcpkgRoot=C:\Dev\vcpkg ^
