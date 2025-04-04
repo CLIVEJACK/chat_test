@@ -36,10 +36,10 @@ jobs:
       - name: Download MySQL Connector C++ 1.1.11
         run: |
           curl -L -o mysql-connector.zip ^
-            "https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip"
+            "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-1.1.11-winx64.zip"
         shell: cmd
 
-      - name: Extract MySQL Connector with 7z
+      - name: Extract MySQL Connector
         run: |
           7z x mysql-connector.zip -omysql-connector
         shell: cmd
