@@ -39,14 +39,14 @@ jobs:
       - name: Build all .sln files with vcpkg integration
         run: |
           Get-ChildItem -Recurse -Filter *.sln | ForEach-Object {
-            Write-Host "Building $($_.FullName)"
-            msbuild $_.FullName `
-              /p:Configuration=Debug `
-              /p:Platform=x64 `
-              /p:VcpkgRoot=C:\Dev\vcpkg `
-              /p:VcpkgTriplet=x64-windows
-              /p:VcpkgEnableManifest=true
-          }
+                Write-Host "Building $($_.FullName)"
+                & msbuild $_.FullName `
+                  /p:Configuration=Debug `
+                  /p:Platform=x64 `
+                  /p:VcpkgRoot=C:\Dev\vcpkg `
+                  /p:VcpkgTriplet=x64-windows `
+                  /p:VcpkgEnableManifest=true
+              }
         shell: pwsh
 
 
