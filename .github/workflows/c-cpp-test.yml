@@ -33,14 +33,16 @@ jobs:
         run: |
           C:\Dev\vcpkg\vcpkg.exe install
 
-      - name: Setup MSBuild (for GitHub-hosted runner)
-        uses: microsoft/setup-msbuild@v1.3.1
-
-      - name: Build all .sln files with vcpkg + MySQL 1.1.x include
+      - name: Download MySQL Connector C++ 1.1.11
+        run: |
+          curl -LO https://downloads.mysql.com/archives/get/p/9/file/mysql-connector-c++-1.1.11-winx64.zip
+          tar -xf mysql-connector-c++-1.1.11-winx64.zip
+      
+      - name: Set MySQL Connector Path
         shell: cmd
         run: |
-          set "mysqlInclude=C:\Program Files\mysql-connector-c++-1.1.11-winx64\include"
-          set "mysqlLib=C:\Program Files\mysql-connector-c++-1.1.11-winx64\lib64"
+          set "mysqlInclude=%GITHUB_WORKSPACE%\mysql-connector-c++-1.1.11-winx64\include"
+          set "mysqlLib=%GITHUB_WORKSPACE%\mysql-connector-c++-1.1.11-winx64\lib64"
           set "msbuildPath=C:\Dev\IDE\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
           for /r %%F in (*.sln) do (
             echo Building %%F
